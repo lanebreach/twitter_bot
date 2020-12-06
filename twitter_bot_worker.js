@@ -8,14 +8,14 @@ module.exports.main= function main (event, context, callback) {
     let url = "https://data.sfgov.org/resource/ktji-gk7t.json";
     let total = 6000000; // some large number for pagination
     let date = moment().local();
-    date = date.subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss');
+    date = date.subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss.mmm');
 
     let options = {
         uri: url,
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            'X-App-Token': process.env["open_data_token"]
+            'X-App-Token': process.env["e"]
         },
         qs: {
             "$limit": total,
@@ -73,6 +73,9 @@ module.exports.main= function main (event, context, callback) {
                     callback(null, {statusCode: 400, body: "failed to send to twitter handler"})
 
                 });
+        }).catch(err => {
+            console.log(err.message)
+            callback(null, {statusCode: 400, body: "failed to fetch from dataSF"})
         });
 };
 
